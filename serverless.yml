@@ -1,0 +1,47 @@
+service: code-kata-unit-tests
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+#  environment:
+#    DB_HOST: ${env:DB_HOST}
+#    DB_USER: ${env:DB_USER}
+#    DB_PASSWORD: ${env:DB_PASSWORD}
+#    DB_NAME: ${env:DB_NAME}
+#    WEATHER_SERVICE_API_KEY: ${env:WEATHER_SERVICE_API_KEY}
+#    WEATHER_SERVICE_API_URL: ${env:WEATHER_SERVICE_API_URL}
+#    LOCATION: ${env:LOCATION}
+
+functions:
+  scheduledFunction:
+    handler: src/application/handlers/WeatherHandler.getWeather
+    events:
+      - schedule:
+          rate: rate(3 hours)
+          enabled: true
+      - http:
+          path: weather
+          method: get
+          cors: true
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    lambdaPort: 3002
+    useChildProcesses: true
+    noPrependStageInUrl: true
+
+package:
+  include:
+    - src/**/*
+    - ormconfig.json
+  individually: true
+
+hooks:
+  after:deploy:deploy: npm run migrate
