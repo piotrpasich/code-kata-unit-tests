@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { createConnection, getConnectionOptions } from 'typeorm';
-import { initializeDatabase } from '../src/infrastructure/database/database'
+import { database } from '../src/infrastructure/database/Database'
 
 const runMigrations = async () => {
   console.log('initialize')
-  const connection = await initializeDatabase();
+  const connection = await database();
   console.log('run migrations')
   await connection.runMigrations();
   await connection.close();

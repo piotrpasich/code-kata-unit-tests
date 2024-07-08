@@ -20,7 +20,7 @@ functions:
     handler: src/application/handlers/WeatherHandler.getWeather
     events:
       - schedule:
-          rate: rate(3 hours)
+          rate: rate(3 minutes)
           enabled: true
       - http:
           path: weather

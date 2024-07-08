@@ -1,20 +1,20 @@
 import { WeatherDbRepository as WeatherDbRepositoryInterface } from '../../domain/repositories/WeatherDbRepository';
-import { Connection, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { Weather as DomainWeather } from '../../domain/entities/Weather';
-import { initializeDatabase } from '../database/database'
 import { Weather } from '../entities/Weather'
+import { Database } from '../database/Database'
 
 export class WeatherDbRepository implements WeatherDbRepositoryInterface {
-  private static connection: Connection;
+  private static database: Database;
   private weatherRepository: Repository<Weather>;
 
   private constructor() {
-    this.weatherRepository = WeatherDbRepository.connection.getRepository(Weather);
+    this.weatherRepository = WeatherDbRepository.database.getDataSource().getRepository(Weather);
   }
 
   static async initialize(): Promise<WeatherDbRepository> {
-    if (!WeatherDbRepository.connection) {
-      WeatherDbRepository.connection = await initializeDatabase();
+    if (!WeatherDbRepository.database) {
+      WeatherDbRepository.database = await Database.getInstance();
     }
     return new WeatherDbRepository();
   }

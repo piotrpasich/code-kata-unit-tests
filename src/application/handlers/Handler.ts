@@ -1,5 +1,6 @@
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from 'aws-lambda'
 import crypto from 'crypto'
+import { logger } from '../../infrastructure/logging/logger'
 
 export const handlerWrapper = (
   handler: (
@@ -42,9 +43,8 @@ export const handlerWrapper = (
         body: response && response.httpStatusCode === 201 ? undefined : body
       }
     } catch (error: any) {
-      console.log(error)
+      logger.error(error)
       let statusCode = error.statusCode || 500
-      statusCode = 200
 
       return {
         statusCode: statusCode,
