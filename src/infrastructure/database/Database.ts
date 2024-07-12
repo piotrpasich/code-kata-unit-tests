@@ -1,10 +1,6 @@
 import { createConnection, DataSource } from 'typeorm'
-import * as dotenv from 'dotenv';
 import { DataSourceOptions } from 'typeorm/data-source/DataSourceOptions'
-import { logger } from '../logging/logger'
-import { ConfigurationError } from '../../domain/errors/ConfigurationError'
-
-dotenv.config();
+import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from '../config'
 
 export class Database {
   private static instance: Database
@@ -17,17 +13,13 @@ export class Database {
     if (Database.instance) {
       return Database.instance
     }
-    if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_NAME) {
-      logger.error('Missing configuration for Weather service')
-      throw new ConfigurationError('Missing configuration for Weather service')
-    }
     const options: DataSourceOptions = {
       type: 'mysql', // or your database type
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT || '3306', 10),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      host: DB_HOST,
+      port: DB_PORT,
+      username: DB_USER,
+      password: DB_PASSWORD,
+      database: DB_NAME,
       entities: [__dirname + '/../entities/*.js'],
       synchronize: true,
       logging: false,

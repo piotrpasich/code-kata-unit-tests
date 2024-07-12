@@ -34,23 +34,7 @@ describe('Database', () => {
     process.env = originalEnv; // Restore the original environment variables
   });
 
-  it('should throw an error if any required environment variable is missing', async () => {
-    delete process.env.DB_HOST;
-    delete process.env.DB_USER;
-    delete process.env.DB_PASSWORD;
-    delete process.env.DB_NAME;
-
-    await expect(Database.getInstance()).rejects.toThrow(ConfigurationError);
-    expect(logger.error).toHaveBeenCalledWith('Missing configuration for Weather service');
-  });
-
   it('should create a database connection with correct options', async () => {
-    process.env.DB_HOST = 'localhost';
-    process.env.DB_USER = 'root';
-    process.env.DB_PASSWORD = 'password';
-    process.env.DB_NAME = 'weather';
-    process.env.DB_PORT = '3306';
-
     const mockConnection = { isConnected: true } as unknown as DataSource;
     (createConnection as jest.Mock).mockResolvedValue(mockConnection);
 

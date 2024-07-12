@@ -8,13 +8,14 @@ import Mock = jest.Mock
 // Mock Database
 jest.mock('../../../src/infrastructure/database/Database');
 
+let mockSave: Mock = jest.fn();
 // Mock typeorm
 jest.mock('typeorm', () => {
   const actualTypeorm = jest.requireActual('typeorm');
   return {
     ...actualTypeorm,
     Repository: jest.fn().mockImplementation(() => ({
-      save: jest.fn(),
+      save: mockSave,
     })),
   };
 });
@@ -22,10 +23,8 @@ jest.mock('typeorm', () => {
 describe('WeatherDbRepository', () => {
   let database: Database;
   let weatherRepository: jest.Mocked<Repository<Weather>>;
-  let mockSave: Mock;
 
   beforeEach(() => {
-    mockSave = jest.fn()
     weatherRepository = {
       save: mockSave,
     } as any;

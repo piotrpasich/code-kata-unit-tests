@@ -5,6 +5,7 @@ import { WeatherApiRepository } from '../../infrastructure/repositories/WeatherA
 import { WeatherApiClient } from '../../infrastructure/api/WeatherApiClient'
 import { handlerWrapper } from './Handler'
 import { WeatherDbRepository } from '../../infrastructure/repositories/WeatherDbRepository'
+import { Weather } from '../../domain/entities/Weather'
 
 const getController = async (): Promise<WeatherController> => {
   const weatherApiClient: WeatherApiClient = new WeatherApiClient()
@@ -15,13 +16,10 @@ const getController = async (): Promise<WeatherController> => {
   return new WeatherController(weatherService)
 }
 
-export const getWeather = handlerWrapper(async (event: any) => {
+export const getWeather = handlerWrapper(async (event: any): Promise<Weather | null> => {
   const location = process.env.LOCATION || ''
   const weatherController: WeatherController = await getController()
-  const weather = await weatherController.updateWeather(location)
+  const weather: Weather = await weatherController.updateWeather(location)
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(weather)
-  }
+  return weather
 })

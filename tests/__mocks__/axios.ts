@@ -1,5 +1,6 @@
+export const getAxiosCallMock = jest.fn()
 const axios = {
-  get: jest.fn(),
+  get: getAxiosCallMock
 };
 
 export default axios;

@@ -18,7 +18,7 @@ export const handlerWrapper = (
     'Access-Control-Allow-Headers': 'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token, Accept-Language, bodweb'
   }
 
-  return async (event: APIGatewayEvent, context: Context, callback: APIGatewayProxyCallback) => {
+  return async (event: APIGatewayEvent, context?: Context, callback?: APIGatewayProxyCallback) => {
     try {
       const response = await handler(event, context, callback)
 
