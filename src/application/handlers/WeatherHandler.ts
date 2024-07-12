@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import 'reflect-metadata'
 import { WeatherController } from '../controllers/WeatherController'
 import { WeatherService } from '../services/WeatherService'
 import { WeatherApiRepository } from '../../infrastructure/repositories/WeatherApiRepository'
@@ -6,6 +6,7 @@ import { WeatherApiClient } from '../../infrastructure/api/WeatherApiClient'
 import { handlerWrapper } from './Handler'
 import { WeatherDbRepository } from '../../infrastructure/repositories/WeatherDbRepository'
 import { Weather } from '../../domain/entities/Weather'
+import { WEATHER_SERVICE_LOCATION } from '../../infrastructure/config'
 
 const getController = async (): Promise<WeatherController> => {
   const weatherApiClient: WeatherApiClient = new WeatherApiClient()
@@ -17,7 +18,7 @@ const getController = async (): Promise<WeatherController> => {
 }
 
 export const getWeather = handlerWrapper(async (event: any): Promise<Weather | null> => {
-  const location = process.env.LOCATION || ''
+  const location = WEATHER_SERVICE_LOCATION
   const weatherController: WeatherController = await getController()
   const weather: Weather = await weatherController.updateWeather(location)
 

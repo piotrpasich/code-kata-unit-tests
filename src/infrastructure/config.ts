@@ -15,6 +15,8 @@ export const DB_PORT: number = parseInt(process.env.DB_PORT || '3306', 10)
 
 assertIsString(process.env.WEATHER_SERVICE_API_KEY)
 assertIsString(process.env.WEATHER_SERVICE_API_URL)
+assertIsString(process.env.WEATHER_SERVICE_LOCATION)
 
 export const WEATHER_SERVICE_API_KEY: string = <string>process.env.WEATHER_SERVICE_API_KEY
 export const WEATHER_SERVICE_API_URL: string = <string>process.env.WEATHER_SERVICE_API_URL
+export const WEATHER_SERVICE_LOCATION: string = <string>process.env.WEATHER_SERVICE_LOCATION
