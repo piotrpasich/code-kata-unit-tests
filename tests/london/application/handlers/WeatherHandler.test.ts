@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { getWeather } from '../../../../src/application/handlers/WeatherHandler'
 import { APIGatewayEvent } from 'aws-lambda'
 import { getAxiosCallMock } from '../../../__mocks__/axios'

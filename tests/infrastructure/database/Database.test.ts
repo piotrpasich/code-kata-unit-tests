@@ -1,8 +1,5 @@
-import { DataSource, createConnection } from 'typeorm';
-import * as dotenv from 'dotenv';
+import { createConnection, DataSource } from 'typeorm'
 import { Database } from '../../../src/infrastructure/database/Database'
-import { ConfigurationError } from '../../../src/domain/errors/ConfigurationError'
-import { logger } from '../../../src/infrastructure/logging/logger'
 
 // Mock dotenv
 jest.mock('dotenv', () => ({
@@ -37,8 +34,6 @@ describe('Database', () => {
   it('should create a database connection with correct options', async () => {
     const mockConnection = { isConnected: true } as unknown as DataSource;
     (createConnection as jest.Mock).mockResolvedValue(mockConnection);
-
-    const database = await Database.getInstance();
 
     expect(createConnection).toHaveBeenCalledWith({
       type: 'mysql',

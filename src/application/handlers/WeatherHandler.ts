@@ -17,7 +17,7 @@ const getController = async (): Promise<WeatherController> => {
   return new WeatherController(weatherService)
 }
 
-export const getWeather = handlerWrapper(async (event: any): Promise<Weather | null> => {
+export const getWeather = handlerWrapper(async (): Promise<Weather | null> => {
   const location = WEATHER_SERVICE_LOCATION
   const weatherController: WeatherController = await getController()
   const weather: Weather = await weatherController.updateWeather(location)

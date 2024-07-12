@@ -1,5 +1,4 @@
 import { WeatherService } from '../services/WeatherService';
-import { Weather } from '../../domain/entities/Weather'
 
 export class WeatherController {
   constructor(

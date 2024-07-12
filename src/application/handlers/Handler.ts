@@ -2,12 +2,17 @@ import { APIGatewayEvent, APIGatewayProxyCallback, Context } from 'aws-lambda'
 import crypto from 'crypto'
 import { logger } from '../../infrastructure/logging/logger'
 
+interface Response {
+  statusCode: number,
+  headers: string[],
+  body?: string
+}
 export const handlerWrapper = (
   handler: (
     event: APIGatewayEvent,
     context?: Context,
     callback?: APIGatewayProxyCallback
-  ) => Promise<any> | any
+  ) => Promise<Response> | Response
 ) => {
 
   const baseHeaders = {
@@ -20,7 +25,10 @@ export const handlerWrapper = (
 
   return async (event: APIGatewayEvent, context?: Context, callback?: APIGatewayProxyCallback) => {
     try {
-      const response = await handler(event, context, callback)
+      const response: {
+        httpStatusCode?: number,
+        body?: string
+      } = await handler(event, context, callback)
 
       const body = response ? JSON.stringify(response) : null
 
@@ -42,9 +50,9 @@ export const handlerWrapper = (
         headers: headers,
         body: response && response.httpStatusCode === 201 ? undefined : body
       }
-    } catch (error: any) {
+    } catch (error) {
       logger.error(error)
-      let statusCode = error.statusCode || 500
+      const statusCode = error.statusCode || 500
 
       return {
         statusCode: statusCode,

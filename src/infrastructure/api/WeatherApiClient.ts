@@ -10,8 +10,9 @@ export class WeatherApiClient {
     this.baseUrl = getWeatherServiceConfig().baseUrl;
   }
 
-  async fetchWeather(location: string): Promise<any> {
+  async fetchWeather(location: string): Promise<unknown> {
     const response = await axios.get(`${this.baseUrl}?q=${location}&appid=${this.apiKey}&units=metric`);
+
     return response.data;
   }
 }
